@@ -24,16 +24,19 @@ def get_grid_points(img_width, img_height, size):
     horizontal_spacing = hexa_witdh
     vertical_spacing = hexa_height * 0.75 
 
-    num_cols = int(img_width / horizontal_spacing) + 1
-    num_rows = int(img_height / vertical_spacing) + 1
+    num_cols = int(img_width / horizontal_spacing) + 5
+    num_rows = int(img_height / vertical_spacing) + 5
     
+    half_w = hexa_witdh / 2
+    half_h = hexa_height / 2
+
     for row in range(num_rows):
         for col in range(num_cols):
             x = col * horizontal_spacing
             y = row * vertical_spacing
             if row % 2 == 1:
                 x += hexa_witdh / 2 
-            if ((0 <= x) and (x < img_width)) and ((0 <= y) and ( y < img_height)):
+            if (x - half_w < img_width) and (x + half_w > 0) and (y - half_h < img_height) and (y + half_h > 0):
                 points.append((x, y))
     return points
 
@@ -61,17 +64,49 @@ def sample_color(img, x_center, y_center, size):
     else:
         return (0, 0, 0)
 
+def create_hexa_svm(center, size, color):
+    x, y = center
+    points = []
+
+    for i in range(6):
+        angle_deg = 60 * i - 30
+        angle_rad = math.pi/180 * angle_deg
+        
+        pt_x = x + size * math.cos(angle_rad)
+        pt_y = y + size * math.sin(angle_rad)
+        
+        points.append(f"{pt_x:.2f} {pt_y:.2f}")
+    
+    str_points = ",".join(points)
+
+    rgb = f"rgb({color[0]},{color[1]},{color[2]})"
+    return f'<polygon points="{str_points}" fill="{rgb}" stroke="{rgb}" stroke-width="1"/>'
+
+def generate_img(output_path, image, hexagones):
+    with open(output_path, 'w') as f:
+        header = f'<svg width="{image.width}" height="{image.height}">'
+        f.write(header + '\n')
+        
+        for element in hexagones:
+            f.write(f'  {element}\n')
+            
+        f.write('</svg>\n')
+
 if __name__ == "__main__":
 
     INPUT_FILE = "img/screenshot.jpg" 
+    OUTPUT_FILE = "img/screen.svg"
     image = load_image(INPUT_FILE)
-
-    count = 0
-    points = get_grid_points(image.width, image.height, 10)
-    for point in points:
-        count += 1
-        
-    print("Nombre d'hexagone", count)
     
-    sample_col_first = sample_color(image, points[0][0], points[0][1], 2)
-    print(sample_col_first)
+    SIZE = 10
+
+    hexagone_center = get_grid_points(image.width, image.height, SIZE)
+    colors = []
+    for point in hexagone_center:
+        colors.append(sample_color(image, point[0], point[1], SIZE))
+    
+    hexagones = []
+    for color, hex_point in zip(colors, hexagone_center):
+        hexagones.append(create_hexa_svm(hex_point, SIZE, color))
+
+    generate_img(OUTPUT_FILE, image, hexagones)
