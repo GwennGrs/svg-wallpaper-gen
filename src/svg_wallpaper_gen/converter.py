@@ -10,12 +10,13 @@ def load_image(image_path):
     return img
 
 
-def get_hexagone_grid_centers(img_width, img_height, size):
+def get_grid_points(img_width, img_height, size):
     """
     Generate the center of each hexagone of our picture.
     Using : point-top paradigm
     """
 
+    points = []
     hexa_witdh = math.sqrt(3) * size
     hexa_height = 2 * size
     
@@ -32,8 +33,33 @@ def get_hexagone_grid_centers(img_width, img_height, size):
             y = row * vertical_spacing
             if row % 2 == 1:
                 x += hexa_witdh / 2 
-            if 0 <= x < img_width and 0 <= y < img_height:
-                yield (x, y)
+            if ((0 <= x) and (x < img_width)) and ((0 <= y) and ( y < img_height)):
+                points.append((x, y))
+    return points
+
+def sample_color(img, x_center, y_center, size):
+    radius = int(size / 2) 
+
+    x_start = max(0, int(x_center - radius))
+    x_end = min(img.width, int(x_center + radius))
+    y_start = max(0, int(y_center - radius))
+    y_end = min(img.height, int(y_center + radius))
+
+    array_r = [] 
+    array_g = []
+    array_b = [] 
+    for x in range(x_start, x_end):
+        for y in range(y_start, y_end):
+            pixel = img.getpixel((x, y))
+            array_r.append(pixel[0])
+            array_g.append(pixel[1])
+            array_b.append(pixel[2])
+
+    total_pix = len(array_b)
+    if total_pix > 0:
+        return ( (sum(array_r)) // total_pix, (sum(array_g)) // total_pix, (sum(array_b)) // total_pix )
+    else:
+        return (0, 0, 0)
 
 if __name__ == "__main__":
 
@@ -41,7 +67,11 @@ if __name__ == "__main__":
     image = load_image(INPUT_FILE)
 
     count = 0
-    for x, y in get_hexagone_grid_centers(image.width, image.height, 20):
+    points = get_grid_points(image.width, image.height, 10)
+    for point in points:
         count += 1
         
     print("Nombre d'hexagone", count)
+    
+    sample_col_first = sample_color(image, points[0][0], points[0][1], 2)
+    print(sample_col_first)
