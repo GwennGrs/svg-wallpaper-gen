@@ -95,7 +95,7 @@ def generate_img(output_path, image, hexagones):
 if __name__ == "__main__":
 
     INPUT_FILE = "img/screenshot.jpg" 
-    OUTPUT_FILE = "img/screen.svg"
+    OUTPUT_FILE = "img/file.svg"
     image = load_image(INPUT_FILE)
     
     SIZE = 10
