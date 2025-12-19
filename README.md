@@ -1,3 +1,4 @@
+![Coverage](coverage.svg)
 # Hexagonal Wallpaper Generator
 
 This project, developed as part of the **Refresher Computer Science** course, enables the generation of high-quality **SVG** images using hexagons. This method allows images that were initially of low resolution to be rendered in a higher, scalable quality.
@@ -7,6 +8,7 @@ The project offers an efficient and flexible image generation process for the us
 * **User Interface**: With `generator_app.py`, the **Marimo** file allows for an interactive use of the class, making the project easy for the user to operate.
 * **Object-Oriented**: Wallpaper creation is handled through the **Hexagonal** class, ensuring a standardized generation process.
 * **Flexibility**: The user can easily choose an input image of any size and decide on the specific size they want for the hexagons.
+* **Testing**: all the function in the class are tester.
 
 ## Installation & Usage
 
