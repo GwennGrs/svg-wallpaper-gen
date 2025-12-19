@@ -45,7 +45,60 @@ def _(Hexagonal, button, input_file, mo, output_file, size):
 
 
 @app.cell
-def _():
+def _(mo):
+    mo.md(r"""
+    ## Testing on different picture of different size
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Cat picture
+    """)
+    return
+
+
+@app.cell
+def _(Hexagonal):
+    cat_gen = Hexagonal("img/cat.jpg", 10)
+    cat_gen.create_hexas()
+    cat_gen.generate_img("img/cat.svg")
+    return
+
+
+@app.cell
+def _(mo):
+    with open("img/cat.svg", "r") as f2:
+        cat_svg = f2.read()
+
+    mo.Html(cat_svg)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Nuit etoilee -- size 50
+    """)
+    return
+
+
+@app.cell
+def _(Hexagonal):
+    night = Hexagonal("img/NuitEtoilee.jpg", 50)
+    night.create_hexas()
+    night.generate_img("img/NuitEtoilee.svg")
+    return
+
+
+@app.cell
+def _(mo):
+    with open("img/NuitEtoilee.svg", "r") as f3:
+        night_svg = f3.read()
+
+    mo.Html(night_svg)
     return
 
 
