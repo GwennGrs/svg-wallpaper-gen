@@ -2,6 +2,9 @@ import math
 from PIL import Image
 
 class Hexagonal:
+    '''
+    Hexagonal class use to create wallpaper with hexagonal method
+    '''
     def __init__(self, input_file, size):
         self.size = size        
         img = Image.open(input_file)
@@ -11,10 +14,12 @@ class Hexagonal:
         self.img_height = img.height
 
     def get_grid_points(self):
-        """
-        Generate the center of each hexagone of our picture.
+        '''
+        Generate the center of each hexagone of our picture and return each points in a list.
         Using : point-top paradigm
-        """
+        
+        :param self: Hexagonal previously generated
+        '''
         points = []
         hexa_witdh = math.sqrt(3) * self.size
         hexa_height = 2 * self.size
@@ -40,6 +45,13 @@ class Hexagonal:
         return points
     
     def sample_color(self, x_center, y_center):
+        '''
+        Take the color of the pixels around our center and return the average color
+        
+        :param self: our Hexagon with size and the image
+        :param x_center: the x-coordinates of the center
+        :param y_center: the y-coordinates of the center
+        '''
         radius = int(self.size / 2) 
 
         x_start = max(0, int(x_center - radius))
@@ -64,6 +76,13 @@ class Hexagonal:
             return (0, 0, 0)
 
     def create_unique_hexa_svm(self, center, color):
+        '''
+        Create a unique hexagon using the parameter define, return a unique svg hexagon
+        
+        :param self: our Hexagon with size and the image
+        :param center: coordinates of the point we want to draw the hexagon around
+        :param color: color we want to give at the hexagon
+        '''
         x, y = center
         points = []
 
@@ -82,6 +101,11 @@ class Hexagonal:
         return f'<polygon points="{str_points}" fill="{rgb}" stroke="{rgb}" stroke-width="1"/>'
 
     def create_hexas(self):
+        '''
+        Create all the hexagons
+        
+        :param self: our Hexagon with size and the image
+        '''
         hexagone_center = self.get_grid_points()
         colors = []
         for point in hexagone_center:
@@ -91,6 +115,12 @@ class Hexagonal:
             self.hexagons.append(self.create_unique_hexa_svm(hex_point, color))
 
     def generate_img(self, output_file):
+        '''
+        Generate the hexagonal svg version of our original picture and create it.
+        
+        :param self: our Hexagon with size and the image
+        :param output_file: path of the ouput file.
+        '''
         with open(output_file, 'w') as f:
             header = f'<svg width="{self.img_width}" height="{self.img_height}">'
             f.write(header + '\n')
