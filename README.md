@@ -46,18 +46,18 @@ Marimo will show you your generated picture and you can find it in the `/img` re
 ![Original 1](img/screenshot.jpg)
 
 **After:**
-![Result 1](img/wallpaper.svg)
+<img src="img/wallpaper.svg" alt="SVG Result" width="600">
 
 #### The cat with different size:
 **Before:**
 ![Original 2](img/cat.jpg)
 
 **After:**
-![Result 2](img/cat.svg)
+<img src="img/cat.svg" alt="SVG Result" width="600">
 
 #### The art with small hexagone:
 **Before:**
-![Original 2](img/NuitEtoilee.jpg)
+![Original 3](img/NuitEtoilee.jpg)
 
 **After:**
-![Result 2](img/NuitEtoilee.svg)
+<img src="img/NuitEtoilee.svg" alt="SVG Result" width="600">
