@@ -9,7 +9,7 @@ def _():
     import marimo as mo
     import math
     from PIL import Image
-    from Hexagonal import Hexagonal
+    from svg_wallpaper_gen.Hexagonal import Hexagonal
     return Hexagonal, mo
 
 
